@@ -79,6 +79,12 @@ module.exports={
         res=handleError(res,err);
         console.error(err);
       }
+      if(res.affectedRows==1){
+        res={
+          success:true,
+          message:'注册成功'
+        }
+      }
       return res;
     }else{
       res=handleError(res,{message:'用户名已存在'})
@@ -93,21 +99,34 @@ module.exports={
     let {id,username,new_username}=user_info;
    
     let exist =await isUserExist(username);
+    let newname_exist=await isUserExist(new_username);
+    if(newname_exist){
+      return {
+        success:false,
+        message:'要更改的用户名已存在'
+      }
+    }
     let res;
+
     if(exist){
       // 用户存在
       const sql=`update user_table set username='${new_username}' where id ='${id}'`;
       try{
         res=await sqlHelper(sql);
-        console.log(res);
-        return res;
+        if(res.affectedRows==1){
+          res={
+            success:true,
+            message:'修改用户名成功'
+          }
+          return res;
+        }
       }catch(err){
         res=handleError(res,err)
         return res;
       }
     }else{
       res=handleError(res,{message:'用户不存在'})
-        return res;
+      return res;
     }
   },
 /**

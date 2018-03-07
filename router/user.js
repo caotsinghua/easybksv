@@ -42,18 +42,7 @@
   // body{username,new_username}
   let {username,new_username}=ctx.request.body;
   let res=await UserService.editUserName({id,username,new_username});
-  if(res.affectedRows==1){
-    ctx.body={
-      success:true,
-      message:'修改用户名成功'
-    }
-  }else{
-    ctx.body={
-      success:false,
-      message:'没有修改'
-    }
-  }
- 
+  ctx.body= res;
 })
 
 module.exports=UserRouter;

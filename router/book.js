@@ -12,7 +12,8 @@ BookRouter
   let res=await BookService.getBookMarket(userid);
   ctx.body={
     success:true,
-    results:res
+    books:res,
+    message:'获取成功'
   }
 })
 .post('/addBook',async ctx=>{
@@ -27,7 +28,7 @@ BookRouter
   }else{
     ctx.body={
       success:false,
-      message:'添加书籍失败'
+      message:'添加书籍失败,可能书籍已经在书架了'
     }
   }
 })
